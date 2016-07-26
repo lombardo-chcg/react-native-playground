@@ -7,6 +7,7 @@ import ReduxPromise from 'redux-promise';
 import styles from './styles/styles';
 
 import Header from './components/header';
+import Test from './components/test';
 import ApiDataContainer from './containers/container_api_data';
 import rootReducer from './reducers/index';
 
@@ -21,6 +22,7 @@ class App extends Component {
         <View style={styles.container}>
           <Header />
           <ApiDataContainer />
+          <Test />
         </View>
 
       </Provider>
