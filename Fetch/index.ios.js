@@ -22,17 +22,18 @@ class Fetch extends Component {
   }
 
   componentDidMount() {
-    console.log('c-d-m')
+    console.log('componentDidMount')
     this.setState({ 
-      data: this.getMoviesFromApiAsync()
+      data: this.getDataFromApiAsync()
     })
   }
 
-  getMoviesFromApiAsync() {
+  getDataFromApiAsync() {
     return fetch('//gentle-lowlands-31515.herokuapp.com/test')
       .then((response) => response.json())
       .then((responseJson) => {
-        return responseJson.movies;
+        console.log(response)
+        return responseJson;
       })
       .catch((error) => {
         console.error(error);
@@ -41,7 +42,7 @@ class Fetch extends Component {
 
   render() {
     if (this.state.data === undefined) {
-      console.log(this.state.data, "if")      
+      console.log(this.state.data, "render / if")      
       return (
         <View style={styles.container}>
           <Text style={styles.welcome}>
@@ -57,11 +58,12 @@ class Fetch extends Component {
         </View>
       );
     } else {
-      console.log(this.state.data, "else")
+      console.log(this.state.data, "render / else")
       return (
         <View style={styles.container}>
           <Text style={styles.welcome}>
             api done
+            {this.state.data.joke}
           </Text>
         </View>         
       )
