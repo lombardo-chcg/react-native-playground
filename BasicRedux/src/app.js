@@ -22,7 +22,6 @@ class App extends Component {
         <View style={styles.container}>
           <Header />
           <ApiDataContainer />
-          <Test />
         </View>
 
       </Provider>

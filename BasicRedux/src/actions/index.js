@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import * as types from './types'
 
-const URL = '//gentle-lowlands-31515.herokuapp.com/test';
+const URL = 'https://api.icndb.com/jokes/random';
 
 export function makeApiCall() {
   const request = axios.get(URL);
