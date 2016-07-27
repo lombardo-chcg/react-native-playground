@@ -29,10 +29,10 @@ class Fetch extends Component {
   }
 
   getDataFromApiAsync() {
-    return fetch('//gentle-lowlands-31515.herokuapp.com/test')
+    return fetch('https://gentle-lowlands-31515.herokuapp.com/test')
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(response)
+        console.log(responseJson)
         return responseJson;
       })
       .catch((error) => {
