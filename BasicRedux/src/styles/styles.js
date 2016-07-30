@@ -16,6 +16,14 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  button: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: 'green',
+  },  
 });
 
 export default styles;
