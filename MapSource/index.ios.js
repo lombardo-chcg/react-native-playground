@@ -10,15 +10,41 @@ import {
   MapView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native';
 
 import data from './data.js'
 
 class MapSource extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      lowerTextHeader: "Welcome to the app",
+      lowerTextDescription: "Your next great meal awaits"
+    }
+  }
 
   renderPins() {
-    return data;  
+    data.forEach( (pin) => {
+      pin.rightCalloutView = (
+          <TouchableOpacity
+            onPress={() => {
+              alert('You Are Here');
+            }}>
+            <Text>arrow</Text>
+          </TouchableOpacity>
+        )
+
+      pin.onFocus = () => {
+        this.setState({
+          lowerTextHeader: pin.title,
+          lowerTextDescription: pin.description
+        })
+      }
+    });
+    return data;
   }  
 
   render() {
@@ -38,9 +64,8 @@ class MapSource extends Component {
           style={styles.map} 
         />
         <View style={styles.textWrapper}>
-          <Text style={styles.text} >latitude: </Text>
-          <Text style={styles.text}>longitude: </Text>
-          <Text style={styles.text}>cool map bro</Text>
+          <Text style={styles.headerText} > {this.state.lowerTextHeader} </Text>
+          <Text style={styles.descriptionText} > {this.state.lowerTextDescription} </Text>
         </View>        
       </View>  
     );
@@ -65,9 +90,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',  
   },
 
-  text: {
+  headerText: {
     fontSize: 30
-  }
+  },
+
+  descriptionText: {
+    fontSize: 15
+  }  
 });
 
 AppRegistry.registerComponent('MapSource', () => MapSource);
