@@ -5,8 +5,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: '#F5FcFF'
+    backgroundColor: '#8FE5FF'
   },
+
+	navigator: {
+		flex: 1,
+	},
 
   map: {
     flex: 3,
@@ -19,7 +23,8 @@ const styles = StyleSheet.create({
   },
 
   headerText: {
-    fontSize: 30
+    fontSize: 30,
+    fontFamily: 'American Typewriter'
   },
 
   descriptionText: {

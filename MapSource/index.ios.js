@@ -19,13 +19,14 @@ import data from './data.js';
 
 import styles from './styles.js';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 class MapSource extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      lowerTextHeader: "Welcome to the app",
-      lowerTextDescription: "Your next great meal awaits"
+      focusPin: {}
     }
   }
 
@@ -37,14 +38,13 @@ class MapSource extends Component {
             onPress={ () => {
               this.showDetailView(pin);
             }}>
-            <Text>arrow</Text>
+            <Text><Icon name="angle-double-right" size={30} color="#900" /></Text>
           </TouchableOpacity>
         )
 
       pin.onFocus = () => {
         this.setState({
-          lowerTextHeader: pin.title,
-          lowerTextDescription: pin.description
+          focusPin: pin
         })
       }
     });
@@ -58,6 +58,26 @@ class MapSource extends Component {
         component: DetailView,
         passProps: {pin}
     })
+  }
+
+  renderLowerView() {
+      if (!this.state.focusPin.title) {
+        return (
+        <View style={styles.textWrapper}>  
+          <Text style={styles.headerText} > Welcome to the app </Text>
+          <Text style={styles.descriptionText} > Your next great meal awaits </Text>
+        </View>    
+        )
+      } else {
+        return (
+        <View style={styles.textWrapper}>  
+          <TouchableOpacity onPress={ () => {this.showDetailView(this.state.focusPin); }}>        
+            <Text style={styles.headerText} > {this.state.focusPin.title} </Text>
+            <Text style={styles.descriptionText} > {this.state.focusPin.description} </Text>
+          </TouchableOpacity>  
+        </View>    
+        )
+      }
   }
 
   render() {
@@ -76,10 +96,10 @@ class MapSource extends Component {
 
           style={styles.map} 
         />
-        <View style={styles.textWrapper}>
-          <Text style={styles.headerText} > {this.state.lowerTextHeader} </Text>
-          <Text style={styles.descriptionText} > {this.state.lowerTextDescription} </Text>
-        </View>        
+
+        
+        {this.renderLowerView()}
+     
       </View>  
     );
   }
@@ -89,9 +109,10 @@ class Navigator extends Component {
   render() {
     return (
       <NavigatorIOS
-        style={styles.container}
+        style={styles.navigator}
+        barTintColor = '#8FE5FF'
         initialRoute={{
-          title: 'Dish Fix',
+          title: 'Awesome Dish App',
           component: MapSource
         }} 
         passProps={data} 
@@ -102,7 +123,7 @@ class Navigator extends Component {
 
 class DetailView extends Component {
   render() {
-    console.log(this.props)
+    console.log('DetailView')
     return (
       <View style={styles.container}>
           <Text style={styles.headerText} > {this.props.pin.title} </Text>

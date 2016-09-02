@@ -8,14 +8,14 @@ const data = [
       },
 			{
 	      title: "Girl and the goat",
-	      latitude: 41.995806,
-	      longitude: -87.581944,
+	      latitude: 41.884339,
+	      longitude: -87.656747,
 	      description: "Bushwick bitters aesthetic, PBR&B intelligentsia craft beer scenester. Vegan pitchfork umami skateboard cred"      
       },   
 			{
 	      title: "Pita Inn",
-	      latitude: 41.695806,
-	      longitude: -87.481944,
+	      latitude: 42.040802,
+	      longitude: -87.745276,
 	      description: "Fixie bespoke typewriter blue bottle, blog kickstarter godard gochujang migas. Kitsch bitters actually wayfarers"      
       }
 
