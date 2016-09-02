@@ -13,37 +13,33 @@ import {
   View
 } from 'react-native';
 
-class MapSource extends Component {
-  constructor(props) {
-    super(props);
+import data from './data.js'
 
-    this.state = {
-      pin: {
-      latitude: 0,
-      longitude: 0        
-      }
-    }
-  }
-  onRegionChangeComplete(region) {
-    this.setState({
-      pin: {
-        latitude: region.latitude,
-        longitude: region.longitude       
-      }
-    });
+class MapSource extends Component {
+
+  renderPins() {
+    return data;  
   }  
 
   render() {
     return (
       <View style={styles.container}>
         <MapView
-          annotations={[this.state.pin]}
+
+          annotations={this.renderPins()}
+
+          region={{
+            latitude: 41.795806,
+            longitude: -87.781944,
+            latitudeDelta: 1,
+            longitudeDelta: 1,
+          }}
+
           style={styles.map} 
-          onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
         />
         <View style={styles.textWrapper}>
-          <Text style={styles.text} >latitude: {this.state.pin.latitude}</Text>
-          <Text style={styles.text}>longitude: {this.state.pin.longitude}</Text>
+          <Text style={styles.text} >latitude: </Text>
+          <Text style={styles.text}>longitude: </Text>
           <Text style={styles.text}>cool map bro</Text>
         </View>        
       </View>  
