@@ -8,13 +8,16 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   MapView,
-  StyleSheet,
+  NavigatorIOS,
   Text,
+  TouchableHighlight,
   TouchableOpacity,
   View
 } from 'react-native';
 
-import data from './data.js'
+import data from './data.js';
+
+import styles from './styles.js';
 
 class MapSource extends Component {
   constructor(props) {
@@ -28,10 +31,11 @@ class MapSource extends Component {
 
   renderPins() {
     data.forEach( (pin) => {
+
       pin.rightCalloutView = (
           <TouchableOpacity
-            onPress={() => {
-              alert('You Are Here');
+            onPress={ () => {
+              this.showDetailView(pin);
             }}>
             <Text>arrow</Text>
           </TouchableOpacity>
@@ -44,8 +48,17 @@ class MapSource extends Component {
         })
       }
     });
+
     return data;
   }  
+
+  showDetailView(pin){
+    this.props.navigator.push({
+        title: pin.title,
+        component: DetailView,
+        passProps: {pin}
+    })
+  }
 
   render() {
     return (
@@ -72,31 +85,31 @@ class MapSource extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: '#F5FcFF'
-  },
+class Navigator extends Component {
+  render() {
+    return (
+      <NavigatorIOS
+        style={styles.container}
+        initialRoute={{
+          title: 'Dish Fix',
+          component: MapSource
+        }} 
+        passProps={data} 
+      />
+    )
+  }
+}
 
-  map: {
-    flex: 3,
-    marginTop: 30
-  },
+class DetailView extends Component {
+  render() {
+    console.log(this.props)
+    return (
+      <View style={styles.container}>
+          <Text style={styles.headerText} > {this.props.pin.title} </Text>
+          <Text style={styles.descriptionText} > {this.props.pin.description} </Text>
+      </View>
+    );
+  }
+}
 
-  textWrapper: {
-    flex: 1,
-    alignItems: 'center',  
-  },
-
-  headerText: {
-    fontSize: 30
-  },
-
-  descriptionText: {
-    fontSize: 15
-  }  
-});
-
-AppRegistry.registerComponent('MapSource', () => MapSource);
+AppRegistry.registerComponent('MapSource', () => Navigator);
