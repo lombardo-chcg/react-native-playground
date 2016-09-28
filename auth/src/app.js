@@ -2,26 +2,48 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import firebase from 'firebase';
 
-import { Header } from './components/common';  // providing a dir path instead of file will cause the 'index' file to be exported automatically 
-import * as fb from './firebase_credentials';
+import { Button, Header, Spinner } from './components/common';  // providing a dir path instead of file will cause the 'index' file to be exported automatically 
+import LoginForm from './components/LoginForm'
+import fb from '../firebaseCredentials';
 
 
 class App extends Component {
+	state = { loggedIn: null }
+
 	componentWillMount() {
 		firebase.initializeApp({
-	    apiKey: fb.API_KEY,
-	    authDomain: fb.AUTH_DOMAIN,
-	    databaseURL: fb.DATABASE_URL,
-	    storageBucket: fb.STORAGE_BUCKET,
-	    messagingSenderId: fb.MESSAGE_SENDER_ID
+	    apiKey: fb.apiKey,
+	    authDomain: fb.authDomain,
+	    databaseURL: fb.databaseURL,
+	    storageBucket: fb.storageBucket,
+	    messagingSenderId: fb.messagingSenderId
   	});
+
+  	firebase.auth().onAuthStateChanged((user) => {
+  		if (user) {
+  			this.setState({loggedIn: true});
+  		} else {
+  			this.setState({loggedIn: false})
+  		}
+  	});
+	}
+
+	renderContent() {
+		switch (this.state.loggedIn) {
+			case true:
+				return <Button onPress={() => firebase.auth().signOut()}>Log Out</Button>;
+			case false:
+				return <LoginForm />;
+			default: 
+				return <Spinner />
+		}
 	}
 
 	render() {
 		return (
 			<View>
 				<Header headerText='AUTH TIME BABY' />
-				<Text>APP</Text>
+				{this.renderContent()}
 			</View>
 		)
 	}
