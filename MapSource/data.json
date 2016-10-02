@@ -1,6 +1,5 @@
-{ "places": 
-	[
-
+{ 
+	"places": [
 		{
       "title": "Beetle Bar",
       "latitude": 41.795806,
@@ -19,6 +18,5 @@
       "longitude": -87.745276,
       "description": "Fixie bespoke typewriter blue bottle, blog kickstarter godard gochujang migas. Kitsch bitters actually wayfarers"      
     }
-
 	]
 }

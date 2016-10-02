@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -15,41 +9,64 @@ import {
   View
 } from 'react-native';
 
-import data from './data.js';
-
+import firebase from 'firebase';
 import styles from './styles.js';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+const firebaseDataObject = {
+      apiKey: "AIzaSyCQ_SiadWDa7Wbg8sWbfRojZ4U_XnvjC6c",
+      authDomain: "fbgames-c3a02.firebaseapp.com",
+      databaseURL: "https://fbgames-c3a02.firebaseio.com",
+      storageBucket: "fbgames-c3a02.appspot.com",
+      messagingSenderId: "892804276676"
+    };
+
 
 class MapSource extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      focusPin: {}
+      focusPin: {},
+      mapData: null
     }
   }
 
-  renderPins() {
-    data.forEach( (pin) => {
+  componentWillMount() {
+    firebase.initializeApp(firebaseDataObject);
+  }
 
-      pin.rightCalloutView = (
+  componentDidMount() {
+    const ref = firebase.database().ref("places");
+
+    ref.on('value', (snapshot) => {
+      const fbMapData = snapshot.val();
+
+      this.setState({
+        mapData: fbMapData
+      });
+    });
+  }
+
+  renderPins() {
+    return this.state.mapData.map((pin) => {
+      let thisPin = pin;
+
+      thisPin.rightCalloutView = (
           <TouchableOpacity
-            onPress={ () => {
-              this.showDetailView(pin);
-            }}>
+            onPress={() => { this.showDetailView(pin); }}>
             <Text><Icon name="angle-double-right" size={30} color="#900" /></Text>
           </TouchableOpacity>
         )
 
-      pin.onFocus = () => {
+      thisPin.onFocus = () => {
         this.setState({
           focusPin: pin
         })
       }
+    
+      return thisPin;    
     });
-
-    return data;
   }  
 
   showDetailView(pin){
@@ -81,26 +98,34 @@ class MapSource extends Component {
   }
 
   render() {
+
+    if (this.state.mapData) {
+      return (
+        <View style={styles.container}>
+          <MapView
+
+            annotations={this.renderPins()}
+
+            region={{
+              latitude: 41.795806,
+              longitude: -87.781944,
+              latitudeDelta: 1,
+              longitudeDelta: 1,
+            }}
+
+            style={styles.map} 
+          />
+
+          {this.renderLowerView()}
+       
+        </View>  
+      );
+    }
+
     return (
       <View style={styles.container}>
-        <MapView
-
-          annotations={this.renderPins()}
-
-          region={{
-            latitude: 41.795806,
-            longitude: -87.781944,
-            latitudeDelta: 1,
-            longitudeDelta: 1,
-          }}
-
-          style={styles.map} 
-        />
-
-        
-        {this.renderLowerView()}
-     
-      </View>  
+        <Text style={styles.headerText} > Loading...</Text>
+      </View>
     );
   }
 }
@@ -115,7 +140,7 @@ class Navigator extends Component {
           title: 'Awesome Dish App',
           component: MapSource
         }} 
-        passProps={data} 
+        // passProps={this.state.mapData} 
       />
     )
   }
@@ -123,7 +148,6 @@ class Navigator extends Component {
 
 class DetailView extends Component {
   render() {
-    console.log('DetailView')
     return (
       <View style={styles.container}>
           <Text style={styles.headerText} > {this.props.pin.title} </Text>
