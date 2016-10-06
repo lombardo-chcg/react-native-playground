@@ -3,6 +3,7 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  TextInput,
   View
 } from 'react-native';
 
@@ -29,7 +30,11 @@ class fbdemo extends Component {
       const keys = Object.keys(snapshot.val());
 
       this.setState({
-        users: keys.map((key) => collection[key])
+        users: keys.map((key) => {
+          let result = collection[key];
+          result.key = key;
+          return result;
+        })
       });
     });
   }
@@ -37,7 +42,7 @@ class fbdemo extends Component {
   renderUsers() {
     if (this.state.users.length > 0) {
       return this.state.users.map((user) => {
-        return <Text key={user.email}>{user.email}</Text>
+        return <Text style={styles.instructions} key={user.key}>{user.name}</Text>
       });
     }
 
@@ -47,9 +52,7 @@ class fbdemo extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.instructions}>
           {this.renderUsers()}
-        </Text>
       </View>
     );
   }

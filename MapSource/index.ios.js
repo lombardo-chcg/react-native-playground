@@ -98,7 +98,6 @@ class MapSource extends Component {
   }
 
   render() {
-
     if (this.state.mapData) {
       return (
         <View style={styles.container}>
