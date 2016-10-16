@@ -1,5 +1,5 @@
-import { 
-	EMAIL_CHANGED, 
+import {
+	EMAIL_CHANGED,
 	PASSWORD_CHANGED,
 	LOGIN_USER_ATTEMPT_STARTED,
 	LOGIN_USER_SUCCESS,
@@ -7,7 +7,7 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-	email: '', 
+	email: '',
 	password: '',
 	loading: false,
 	error: '',
@@ -30,9 +30,9 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
 			return {...state, ...INITIAL_STATE, user: action.payload};
 
 		case LOGIN_USER_FAIL:
-			return {...state, error: 'TOTAL FAIL', password: '', loading: false}
+			return {...state, error: action.payload, password: '', loading: false}
 
-		default: 
+		default:
 			return state;
 	}
 }
