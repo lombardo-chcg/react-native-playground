@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, View, Text } from 'react-native';
+import { ListView, View } from 'react-native';
 import { employeesFetch } from '../actions';
-import { CardSection, Spinner } from './common';
+import { Spinner } from './common';
+import EmployeeListItem from './EmployeeListItem';
 
 class EmployeeList extends Component {
   componentWillMount() {
     this.props.employeesFetch();
 
-    this.createDataSource(this.props);
+    // this.createDataSource(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.createDataSource(nextProps);
+    // this.createDataSource(nextProps);
   }
 
   createDataSource({ employees }) {
@@ -23,6 +24,10 @@ class EmployeeList extends Component {
     // this.dataSource = ds.cloneWithRows(employees);
   }
 
+  onRowPress() {
+    Actions.employeeCreateForm({employee: this.props});
+  }
+
   renderEmployeeList() {
     if (!this.props.employees) {
       return <Spinner/>;
@@ -30,9 +35,7 @@ class EmployeeList extends Component {
 
     return this.props.employees.map(employee => {
       return (
-        <CardSection key={employee.uid}>
-          <Text style={styles.titleStyle}>{employee.name}</Text>
-        </CardSection>
+        <EmployeeListItem employee={employee} key={employee.uid}/>
       )
     });
   }
@@ -46,19 +49,12 @@ class EmployeeList extends Component {
   }
 }
 
-const styles = {
-  titleStyle: {
-    fontSize: 18,
-    paddingLeft: 15
-  }
-}
-
 const mapStateToProps = (state) => {
-  const employees = state.employees;
+  const employees = state.employees || {};
   const keys = Object.keys(employees)
 
   if (keys.length === 0) {
-    return { };
+    return { employees: null };
   };
 
   const employeesCollection = keys.map(key => {

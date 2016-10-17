@@ -9,7 +9,6 @@ import {
 } from './types';
 
 export const appLaunchAuthCheck = (user) => {
-	console.log('appLaunchAuthCheck', user)
 	if (user) {
 		return (dispatch) => {
 			loginUserSuccess(dispatch, user)

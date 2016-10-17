@@ -8,11 +8,12 @@ import { appLaunchAuthCheck, emailChanged, logInUser, passwordChanged } from '..
 
 class LoginForm extends Component {
 	componentWillMount() {
-  	firebase.auth().onAuthStateChanged((user) => {
-  		if (user) {
-  			this.props.appLaunchAuthCheck(user)
-  		}
-		});
+  	firebase.auth()
+			.onAuthStateChanged(user => {
+  			if (user) {
+  				this.props.appLaunchAuthCheck(user)
+  			}
+			});
 	}
 
 	onEmailChange(text) {
